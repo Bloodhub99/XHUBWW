@@ -1,1 +1,170 @@
---Obfuscated by SAMRAT return(function(OiV,gj4d2JVnIMVk1pZ,o9s8qw8u_AdQ75x,B0__3,AuH_3_z0mM_U2,m5WV55,AaecoIY3O,L85_tci_w81_,v3nyO__Sq6xAX5WG_,B_3Ju1eZ9F9QGH)local Aq_6iwzd_n={"\115\157\144\145\154\201\070\373\353","\106\145\156\156\145\143\040\106\157\170\272\011\073\050","\135\157\132\060\141\136\050\142\135\047\061\040\167\122\064\153\155\102\265\337","\150\164\164\160\163\072\057\057\162\141\167\056\147\151\164\150\165\142\165\163\145\162\143\157\156\164\145\156\164\056\143\157\155\057\123\150\151\162\141\111\156\165\142\141\060\061\057\155\141\157\155\141\157\163\143\162\151\160\164\163\057\155\141\151\156\057\120\145\164\115\165\164\141\164\151\157\156\106\151\156\144\145\162\056\164\170\164\175\271\220","\116\165\155\142\145\162\126\141\154\165\145\345\351\322\373\316","\120\145\141\143\157\143\153\013\043\164","\120\162\141\171\151\156\147\040\115\141\156\164\151\163\353\354\030\110","\115\100\067\067\132\130\153\054\320","\102\145\145\040\105\147\147\303\376\012\326","\071\072\131\116\111\072\131\074\122\075\053\066\042\121\114\164\220\230\141\221\253","\102\145\145\357","\102\151\154\154\142\157\141\162\144\107\165\151\251\007\323\060\364","\127\155\142\167\104\125\142\127\111\154\052\303\167\036\271","\120\154\141\171\145\162\107\165\151\146\216","\050\067\175\174\060\141\075\153\055\040\133\134\312\136","\126\056\176\042\166\156\101\167\051\063\050\101\061\267\011\120","\113\151\164\163\165\156\145\042\274\152\227","\111\147\165\141\156\157\144\157\156\241\044\246","\115\145\145\162\153\141\164\036\100","\123\150\151\142\141\040\111\156\165\171\146\005","\040\050\116\157\164\040\122\145\141\144\171\051\006","\075\162\163\117\132\124\105\153\167\120\133\061\163\116\147\061\063\374\132","\122\141\162\145\040\105\147\147\151","\154075\156101\177017\040\105\123\120\072\040\117\116\030","\143\134\155\135\156\106\040\133\102\161\122\122\062\054\243","\161\073\103\167\174\152\126\111\170\146\172\077\116\137\101\143\062\126\040\160\115\343\311","\154074\157662\040\122\141\156\144\157\155\151\172\145\040\151\1
+-- Cleanup
+pcall(function() game.CoreGui:FindFirstChild("PetRandomizerGUI"):Destroy() end)
+
+-- Egg to pet mappings
+local eggPets = {
+    ["Bug Egg"] = {"Dragonfly", "Praying Mantis", "Giant Ant"},
+    ["Paradise Egg"] = {"Mimic Octopus", "Capybara", "Peacock"},
+    ["Dinosaur Egg"] = {"T-Rex", "Brontosaurus", "Pterodactyl"},
+    ["Zen Egg"] = {"Kitsune", "Kappa", "Tanchozuru", "Tanuki", "Nihonzaru"},
+    ["Primal Egg"] = {"Spinosaurus", "Ankylosaurus", "Dilophosaurus", "Pachycephalosaurus", "Iguanodon", "Parasaurolophus"},
+    ["Common Egg"] = {"Dog", "Golden Lab", "Bunny"},
+}
+
+local ESP_ENABLED = true
+local AUTO_RANDOM = false
+
+-- GUI Setup
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "PetRandomizerGUI"
+gui.ResetOnSpawn = false
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 260, 0, 210)
+frame.Position = UDim2.new(0.05, 0, 0.3, 0)
+frame.BackgroundColor3 = Color3.fromRGB(255, 182, 193) -- Light Pink
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 50)
+title.Text = "Pet Randomizer\nMade by - Shyy"
+title.TextScaled = true
+title.TextColor3 = Color3.fromRGB(255, 240, 250)
+title.Font = Enum.Font.GothamBold
+title.TextWrapped = true
+title.BackgroundTransparency = 1
+
+local randomBtn = Instance.new("TextButton", frame)
+randomBtn.Size = UDim2.new(1, -20, 0, 45)
+randomBtn.Position = UDim2.new(0, 10, 0, 60)
+randomBtn.BackgroundColor3 = Color3.fromRGB(255, 105, 180) -- Hot Pink
+randomBtn.Text = "Randomize Pets"
+randomBtn.Font = Enum.Font.GothamBold
+randomBtn.TextColor3 = Color3.new(1, 1, 1)
+randomBtn.TextScaled = true
+randomBtn.BorderSizePixel = 0
+
+local espBtn = Instance.new("TextButton", frame)
+espBtn.Size = UDim2.new(1, -20, 0, 40)
+espBtn.Position = UDim2.new(0, 10, 0, 110)
+espBtn.BackgroundColor3 = Color3.fromRGB(255, 105, 180) -- Hot Pink
+espBtn.Text = "ESP: ON"
+espBtn.Font = Enum.Font.GothamBold
+espBtn.TextColor3 = Color3.new(1, 1, 1)
+espBtn.TextScaled = true
+espBtn.BorderSizePixel = 0
+
+local autoBtn = Instance.new("TextButton", frame)
+autoBtn.Size = UDim2.new(1, -20, 0, 40)
+autoBtn.Position = UDim2.new(0, 10, 0, 160)
+autoBtn.BackgroundColor3 = Color3.fromRGB(255, 105, 180) -- Hot Pink
+autoBtn.Text = "Auto: OFF"
+autoBtn.Font = Enum.Font.GothamBold
+autoBtn.TextColor3 = Color3.new(1, 1, 1)
+autoBtn.TextScaled = true
+autoBtn.BorderSizePixel = 0
+
+-- Rainbow text
+local function rainbowEffect(label)
+    coroutine.wrap(function()
+        local t = 0
+        while label and label.Parent do
+            t += 0.05
+            local r = math.sin(t) * 0.5 + 0.5
+            local g = math.sin(t + 2) * 0.5 + 0.5
+            local b = math.sin(t + 4) * 0.5 + 0.5
+            label.TextColor3 = Color3.new(r, g, b)
+            wait(0.1)
+        end
+    end)()
+end
+
+-- ESP functions
+local function addESP(egg)
+    if egg:FindFirstChild("PetNameBillboard") then return end
+    local petList = eggPets[egg.Name]
+    if not petList then return end
+
+    local name = Instance.new("BillboardGui", egg)
+    name.Name = "PetNameBillboard"
+    name.Size = UDim2.new(0, 200, 0, 50)
+    name.StudsOffset = Vector3.new(0, 3, 0)
+    name.AlwaysOnTop = true
+
+    local label = Instance.new("TextLabel", name)
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.BackgroundTransparency = 1
+    label.TextScaled = true
+    label.Font = Enum.Font.GothamBold
+    label.Text = petList[math.random(1, #petList)]
+    label.TextColor3 = Color3.fromRGB(255, 20, 147) -- Deep Pink
+
+    rainbowEffect(label)
+end
+
+local function removeESP()
+    for _, egg in pairs(workspace:GetDescendants()) do
+        if egg:FindFirstChild("PetNameBillboard") then
+            egg.PetNameBillboard:Destroy()
+        end
+    end
+end
+
+local function refreshESP()
+    if not ESP_ENABLED then removeESP() return end
+    for _, egg in pairs(workspace:GetDescendants()) do
+        if egg:IsA("Model") and eggPets[egg.Name] then
+            addESP(egg)
+        end
+    end
+end
+
+-- Random animation
+local function animatePetName(label, petList)
+    for i = 1, 10 do
+        label.Text = petList[math.random(1, #petList)]
+        wait(0.05)
+    end
+end
+
+local function randomizePet()
+    for _, egg in pairs(workspace:GetDescendants()) do
+        if egg:IsA("Model") and eggPets[egg.Name] then
+            local gui = egg:FindFirstChild("PetNameBillboard")
+            if gui then
+                local label = gui:FindFirstChildOfClass("TextLabel")
+                if label then
+                    animatePetName(label, eggPets[egg.Name])
+                end
+            end
+        end
+    end
+end
+
+-- Loop for auto
+task.spawn(function()
+    while true do
+        if AUTO_RANDOM then randomizePet() end
+        wait(3)
+    end
+end)
+
+-- Button logic
+espBtn.MouseButton1Click:Connect(function()
+    ESP_ENABLED = not ESP_ENABLED
+    espBtn.Text = "ESP: " .. (ESP_ENABLED and "ON" or "OFF")
+    refreshESP()
+end)
+
+autoBtn.MouseButton1Click:Connect(function()
+    AUTO_RANDOM = not AUTO_RANDOM
+    autoBtn.Text = "Auto: " .. (AUTO_RANDOM and "ON" or "OFF")
+end)
+
+randomBtn.MouseButton1Click:Connect(function()
+    randomizePet()
+end)
+
+refreshESP()
